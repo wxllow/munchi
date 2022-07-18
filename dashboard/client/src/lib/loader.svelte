@@ -1,1 +1,3 @@
-<h1>Loading...</h1>
+<div class="flex justify-center">
+    <img class="h-24" src="/loading.svg" alt="Loading..." />
+</div>

@@ -2,7 +2,9 @@
     import { loadServer } from "$lib/dashboard/dashboard";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
+
     import Sidebar from "$lib/dashboard/sidebar.svelte";
+    import Loader from "$lib/loader.svelte";
     import Welcome from "$lib/dashboard/servers/welcome.svelte";
     import Index from "$lib/dashboard/servers/index.svelte";
 
@@ -31,8 +33,6 @@
             {/if}
         </main>
     {:else}
-        <div class="ml-66 flex justify-center">
-            <img class="h-24" src="/loading.svg" alt="Loading..." />
-        </div>
+        <div class="ml-66 px-2"><Loader /></div>
     {/if}
 </div>
