@@ -1,0 +1,57 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+*.icloud
+
+### Python ###
+__pycache__/
+*.py[cod]
+*$py.class
+poetry.lock
+__pypackages__/
+
+# C extensions
+*.so
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# mkdocs documentation
+/site
+
+/config.toml
+
+s_*
+poetry.lock
+
+# SvelteKit
+node_modules
+dist
+test-results/
+package-lock.json
+yarn.lock
+/packages/create-svelte/template/CHANGELOG.md
+/packages/kit/src/packaging/test/watch/package
+/documentation/types.js
+.env
+.svelte-kit

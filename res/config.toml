@@ -1,0 +1,23 @@
+# --------
+# Munchi Configuration
+# This file will contain secret data. Make sure it is kept secret.
+# --------
+
+# Discord Application Info (Get from https://discord.com/developers)
+application_id = 992952954598457476 # Application/Client ID
+client_secret = "SECRET_CLIENT_SECRET" # Client Secret (used for Oauth)
+token = 'SECRET_BOT_TOKEN' # Bot token (used for bot)
+
+# Redirect URL/URI (used for Oauth, make sure this URL is also added in the Discord developer application)
+redirect_uri = "https://munchi.wxllow.dev/callback" # Redirect URL (should be my.frontend.domain/callback)
+
+# Your secret tenor key (optional, required for gif-related commands)
+tenor_key = 'TENOR'
+
+# Guilds which commands should show up in. If this is not present, the commands will show up globally
+# guild_ids = [123, 456]
+db_url = "mongodb://localhost:27017" # MongoDB URL (used for database)
+
+# Cogs to load (these are the files in the cogs folder)
+# cogs = ["cogs.example"] # Extra cogs to load
+# excluded_cogs = [] # Cogs to exclude
