@@ -1,10 +1,10 @@
 <script type="ts">
-    import axios from "axios";
-    import urlJoin from "url-join";
     import { getConfig } from "$lib/config";
+    import axios from "axios";
     import { onMount } from "svelte";
+    import urlJoin from "url-join";
 
-    import Loader from "$lib/loader.svelte";
+    import Loader from "$lib/components/loader.svelte";
 
     export let servers: Array<PartialGuild> = [];
 

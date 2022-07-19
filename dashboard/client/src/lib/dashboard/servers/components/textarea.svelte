@@ -8,7 +8,7 @@
     export let onchange: any = null;
 </script>
 
-<label for={id} class="block text-gray-300">
+<label for={id} class="px-0 block text-gray-300">
     {title}
 </label>
 <textarea

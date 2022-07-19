@@ -2,7 +2,7 @@
     import { page } from "$app/stores";
 
     import "../app.css";
-    import Header from "$lib/header.svelte";
+    import Header from "$lib/components/header.svelte";
 </script>
 
 <header>

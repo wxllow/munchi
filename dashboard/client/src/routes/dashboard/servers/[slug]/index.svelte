@@ -4,7 +4,7 @@
     import { onMount } from "svelte";
 
     import Sidebar from "$lib/dashboard/sidebar.svelte";
-    import Loader from "$lib/loader.svelte";
+    import Loader from "$lib/components/loader.svelte";
     import Welcome from "$lib/dashboard/servers/welcome.svelte";
     import Index from "$lib/dashboard/servers/index.svelte";
 

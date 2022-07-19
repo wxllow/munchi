@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { login } from "$lib/auth";
+
     import header from "./header";
 
     interface Page {

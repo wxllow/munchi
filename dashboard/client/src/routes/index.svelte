@@ -1,5 +1,5 @@
 <script>
-    import { login } from "$lib/auth";
+    import { getConfig } from "$lib/config";
 </script>
 
 <div
@@ -12,12 +12,14 @@
             Free, fast, powerful, and open-source replacement for all your
             Discord server's needs.
         </p>
-        <button
+        <a
             class="rounded-lg bg-sky-500 px-5 py-2.5 mr-2 mb-2 hover:brightness-90"
-            on:click={login}
+            href={`https://discord.com/api/oauth2/authorize?client_id=${
+                getConfig().application_id
+            }&permissions=8&scope=bot%20applications.commands`}
         >
             Add to Discord
-        </button>
+        </a>
         <a
             class="inline-flex rounded-lg bg-gray-800 px-5 py-2.5 mr-2 mb-2 hover:brightness-90"
             href="https://github.com/wxllow/munchi"
