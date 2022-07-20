@@ -1,14 +1,13 @@
-"""Temporary voice channels"""
+"""Welcome messages"""
 
 import discord
-from discord import Embed, Option
+from discord import Embed
 from discord.ext import commands
 
 from munchi.config import Config
-from munchi.db import Database, VCTypes
+from munchi.db import Database
 
 config = Config()
-guilds = config.guilds
 db = Database().db
 
 
