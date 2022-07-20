@@ -2,8 +2,8 @@
     export let title: string;
     export let id: string;
     export let placeholder: string | null = null;
-    export let value: string | null = null;
-
+    export let value: any | null = null;
+    export let to: any = null;
     export let type: string | null = null;
     export let onchange: any = null;
 </script>
@@ -13,6 +13,7 @@
 </label>
 <textarea
     {id}
+    bind:this={to}
     type={type || "text"}
     on:change={onchange}
     value={value || ""}

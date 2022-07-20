@@ -29,8 +29,6 @@
 
         loadServers()
             .then(() => {
-                console.log(servers);
-
                 servers = servers.sort((a, b) => {
                     return Number(b.has_munchi) - Number(a.has_munchi);
                 }); // Update servers in the page and sort by whether the server has munchi

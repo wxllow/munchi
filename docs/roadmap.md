@@ -12,7 +12,8 @@
 - [x] Autocreate config from example and notify user about editing config
 - [x] Allow welcome/goodbye messages with embeds
 - [x] Add uptime to /about
-- [ ] Reaction Roles (verification or regular)
+- [x] Reaction Roles (verification or regular)
+- [ ] Database Indexes
 - [ ] Move `tempvc` settings to dashboard
 - [ ] Warnings
 - [ ] Command categories and aliases
@@ -32,5 +33,6 @@
 
 - [x] Make server dashboard page
 - [x] Host
+- [ ] Remove react roles also make reaction roles section look decent
 - [ ] Beautify
 - [ ] Make more friendly (such as make it so that your token is checked and you're sent to sign in page if it isn't valid instead of just getting an error)

@@ -6,6 +6,7 @@
     import Sidebar from "$lib/dashboard/sidebar.svelte";
     import Loader from "$lib/components/loader.svelte";
     import Welcome from "$lib/dashboard/servers/welcome.svelte";
+    import Roles from "$lib/dashboard/servers/roles.svelte";
     import Index from "$lib/dashboard/servers/index.svelte";
 
     export let server: Guild | null = null;
@@ -28,6 +29,8 @@
         <main class="ml-64 px-2 items-start text-left">
             {#if $page.url.hash === "#welcome"}
                 <Welcome {server} />
+            {:else if $page.url.hash === "#roles"}
+                <Roles {server} />
             {:else}
                 <Index {server} />
             {/if}

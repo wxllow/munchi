@@ -4,16 +4,18 @@ import logging
 
 import aiohttp
 import hikari
-from sanic.exceptions import BadRequest
+from sanic.exceptions import BadRequest, NotFound
 
 from munchi.config import Config
+from munchi.db import Database
 
 config = Config()
+db = Database().db
 rest = hikari.RESTApp()
 
 
-async def get_guild(guild: int) -> bool:
-    """Get a guild"""
+async def get_guild(guild: int) -> dict:
+    """Get a guild (as bot)"""
     headers = {"Authorization": f"Bot {config.token}"}
 
     async with aiohttp.ClientSession() as session:
@@ -25,7 +27,7 @@ async def get_guild(guild: int) -> bool:
             return await resp.json()
 
 
-async def get_user_guild(guild_id, token):
+async def get_user_guild(guild_id, token) -> dict:
     """Get a user's guild via the bot (Uses user's token to check if bot is in guild)"""
     async with rest.acquire(token) as client:
         g = None
@@ -80,4 +82,21 @@ async def member_in_guild(guild: int, member: int) -> bool:
                 return False
 
             resp.raise_for_status()
+
             return True
+
+
+async def get_user_guild_and_db(guild_id, token):
+    guild = await get_user_guild(guild_id, token)
+
+    if not guild:
+        raise NotFound("Guild not found")
+
+    query = {"guild": guild_id}
+    server = await db["server"].find_one(query)
+
+    if not server:
+        await db["server"].insert_one(query)
+        server = await db["server"].find_one(query)
+
+    return guild, server, query

@@ -20,8 +20,9 @@ export const loadServer = async (slug: string) => {
 };
 
 export const saveChanges = async (e: Event, slug: string) => {
-    const key = (e.target as HTMLInputElement).id;
-    const value = (e.target as HTMLInputElement).value;
+    const key = (e.target as HTMLInputElement | HTMLTextAreaElement).id;
+    const value = (e.target as HTMLInputElement | HTMLTextAreaElement).value;
+
 
     await axios.patch(
         urlJoin(
@@ -44,8 +45,8 @@ const makeObject = async (k: string | Array<string>, v: string): Promise<Object>
 }
 
 export const saveObjectChanges = async (e: Event, slug: string) => {
-    const key = (e.target as HTMLInputElement).id;
-    const value = (e.target as HTMLInputElement).value;
+    const key = (e.target as HTMLInputElement | HTMLTextAreaElement).id;
+    const value = (e.target as HTMLInputElement | HTMLTextAreaElement).value;
 
     const query = await makeObject(key, value);
 

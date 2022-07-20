@@ -65,7 +65,6 @@
         <Input
             title="Goodbye Embed Title"
             id="goodbye_embed.title"
-            placeholder="Channel ID"
             value={server.goodbye_embed.title}
             onchange={saveObjectChange}
         />

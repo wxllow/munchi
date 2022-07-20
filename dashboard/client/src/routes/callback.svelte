@@ -4,6 +4,7 @@
     import urlJoin from "url-join";
     import { getConfig } from "$lib/config";
     import { onMount } from "svelte";
+    import Loader from "$lib/components/loader.svelte";
 
     const login = async () => {
         axios
@@ -27,3 +28,5 @@
         login();
     });
 </script>
+
+<Loader />

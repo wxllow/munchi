@@ -76,7 +76,7 @@ class ReactionRoles(commands.Cog):
             if self.bot.get_guild(reaction.guild_id).get_role(role)
         ]
 
-        await member.remove_roles(rl)
+        await member.remove_roles(*rl)
 
 
 def setup(bot):

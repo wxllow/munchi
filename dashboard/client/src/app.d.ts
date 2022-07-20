@@ -42,4 +42,13 @@ interface Guild extends BaseGuild {
 		title?: string;
 		description?: string;
 	};
+
+	reaction_roles_message: {
+		message: string,
+		guild: string,
+		type: string,
+		roles: {
+			[key: string]: any,
+		}
+	}[];
 }
