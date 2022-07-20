@@ -14,7 +14,7 @@
 - [x] Add uptime to /about
 - [x] Reaction Roles (verification or regular)
 - [ ] Database Indexes
-- [ ] Move `tempvc` settings to dashboard
+- [ ] Move `tempvc` settings to the dashboard
 - [ ] Warnings
 - [ ] Command categories and aliases
 - [ ] Use more embeds for messages
