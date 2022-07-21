@@ -94,15 +94,15 @@
                             <span class="ml-3">{link.name}</span>
                         </a>
                     </li>
-                    <div
-                        id="tooltip-default"
-                        role="tooltip"
-                        class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-700 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip"
-                    >
-                        Coming soon!
-                        <div class="tooltip-arrow" data-popper-arrow />
-                    </div>
                 {/each}
+                <div
+                    id="tooltip-default"
+                    role="tooltip"
+                    class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-700 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip"
+                >
+                    Coming soon!
+                    <div class="tooltip-arrow" data-popper-arrow />
+                </div>
             </ul>
         </div>
     </aside>
