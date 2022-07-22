@@ -120,8 +120,13 @@ async def process_reaction_message(message):
     for reaction in reactions.keys():
         headers = {"Authorization": f"Bot {config.token}"}
 
+        status = None
+
         async with aiohttp.ClientSession() as session:
-            await session.put(
-                f"https://discord.com/api/v10/channels/{channel_id}/messages/{message_id}/reactions/{quote(reaction)}/@me",
-                headers=headers,
-            )
+            while not status or status == 429:
+                status = (
+                    await session.put(
+                        f"https://discord.com/api/v10/channels/{channel_id}/messages/{message_id}/reactions/{quote(reaction)}/@me",
+                        headers=headers,
+                    )
+                ).status_code
