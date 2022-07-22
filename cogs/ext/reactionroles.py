@@ -28,7 +28,7 @@ class ReactionRoles(commands.Cog):
             return member, None, None
 
         roles = message.get("roles", {}).get(
-            reaction.emoji if type(reaction.emoji) is str else str(reaction.emoji.id)
+            reaction.emoji.name if reaction.emoji.id else str(reaction.emoji.id)
         )
 
         if not roles:
@@ -44,7 +44,7 @@ class ReactionRoles(commands.Cog):
         if member.bot:
             return
 
-        if not (roles or message):
+        if not roles or not message:
             return
 
         if message.get("type") == "verify":
@@ -70,7 +70,7 @@ class ReactionRoles(commands.Cog):
         if member.bot:
             return
 
-        if not (roles or message):
+        if not roles or not message:
             return
 
         if message.get("type") == "verify":
