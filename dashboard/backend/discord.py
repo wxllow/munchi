@@ -130,3 +130,5 @@ async def process_reaction_message(message):
                         headers=headers,
                     )
                 ).status_code
+
+                print(status)
