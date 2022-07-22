@@ -1,5 +1,6 @@
 """For interacting with the Discord API"""
 
+import asyncio
 import logging
 from urllib.parse import quote
 
@@ -123,6 +124,7 @@ async def process_reaction_message(message):
         status = None
 
         async with aiohttp.ClientSession() as session:
+            # Retry in case of rate limit
             while not status or status == 429:
                 status = (
                     await session.put(
@@ -131,4 +133,4 @@ async def process_reaction_message(message):
                     )
                 ).status
 
-                print(status)
+            asyncio.sleep(0.25)
