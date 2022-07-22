@@ -100,37 +100,35 @@ async def me_guild(request, guild_id, token):
     return json(guild)
 
 
-@bp.route("/guilds/<guild_id:int>/add_reaction_role", methods=["POST", "PUT"])
+@bp.route("/guilds/<guild_id:int>/add_reaction_message", methods=["POST", "PATCH"])
 @with_token
-async def add_reaction_role(request, guild_id, token):
+async def add_message(request, guild_id, token):
     try:
-        message_id = int(request.json.get("message"))
-        emoji = request.json.get("emoji")
-        role = int(request.json.get("role"))
-        type_ = request.json.get("type")
+        message_id = int(request.json["message"])
+        roles = {k: [int(x) for x in v] for k, v in request.json["roles"].items()}
+        type_ = request.json.get("type", "normal")
     except KeyError as e:
         raise BadRequest(f"Missing {e}")
     except ValueError as e:
         raise BadRequest(f"Invalid field")
 
-    _, _, query = await get_user_guild_and_db(guild_id, token)
+    await get_user_guild_and_db(guild_id, token)
 
-    # Check if server is in database
     msg_q = {"guild": guild_id, "message": message_id}
     message = await db["reaction_roles_message"].find_one(msg_q)
 
     if not message:
+        if request.method == "PATCH":
+            raise NotFound("Message not found, use POST to create")
+
         await db["reaction_roles_message"].insert_one(msg_q)
         message = await db["reaction_roles_message"].find_one(msg_q)
 
     if not message.get("roles"):
-        await db["reaction_roles_message"].update_one(query, {"$set": {"roles": {}}})
+        await db["reaction_roles_message"].update_one(msg_q, {"$set": {"roles": {}}})
         message["roles"] = {}
 
-    if role in message["roles"].get(emoji, []):
-        raise BadRequest("Role already exists")
-
-    message["roles"].update({emoji: message["roles"].get(emoji, []) + [role]})
+    message["roles"].update(roles)
 
     await db["reaction_roles_message"].update_one(
         msg_q,
@@ -145,10 +143,24 @@ async def add_reaction_role(request, guild_id, token):
     return json({})
 
 
-@bp.route("/guilds/<guild_id:int>/remove_reaction_role")
+@bp.route(
+    "/guilds/<guild_id:int>/remove_reaction_message/<message_id:int>",
+    methods=["DELETE"],
+)
 @with_token
-async def remove_reaction_role(request, guild_id, token):
-    pass
+async def remove_message(request, guild_id, message_id, token):
+    await get_user_guild_and_db(guild_id, token)
+
+    # Check if server is in database
+    msg_q = {"guild": guild_id, "message": message_id}
+    message = await db["reaction_roles_message"].find_one(msg_q)
+
+    if not message:
+        raise NotFound("Message not found")
+
+    await db["reaction_roles_message"].delete_one(msg_q)
+
+    return json({})
 
 
 @bp.route("/guilds/<guild_id:int>/update_objects", methods=["PATCH"])
