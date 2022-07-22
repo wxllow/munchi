@@ -129,6 +129,6 @@ async def process_reaction_message(message):
                         f"https://discord.com/api/v10/channels/{channel_id}/messages/{message_id}/reactions/{quote(reaction)}/@me",
                         headers=headers,
                     )
-                ).status_code
+                ).status
 
                 print(status)
