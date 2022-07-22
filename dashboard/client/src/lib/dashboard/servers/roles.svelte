@@ -87,7 +87,6 @@
                     `option[id='${role}']`
                 ) as HTMLOptionElement;
 
-                console.log(optionElem);
                 optionElem.selected = true;
             });
 
