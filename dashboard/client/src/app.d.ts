@@ -26,7 +26,8 @@ interface PartialGuild extends BaseGuild {
 
 interface Guild extends BaseGuild {
 	approximate_member_count: number;
-	roles: Array[];
+	roles: {id: string; name: string; color: string; position: number;}[];
+	channels: {id: string; name: string; type: number;}[];
 
 	// Munchi attributes
 	welcome_message: string;
@@ -45,6 +46,7 @@ interface Guild extends BaseGuild {
 
 	reaction_roles_message: {
 		message: string,
+		channel?: string,
 		guild: string,
 		type: string,
 		roles: {

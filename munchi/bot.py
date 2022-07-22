@@ -16,26 +16,6 @@ log = logging.getLogger("munchi")
 
 config = Config()
 
-# Get cogs
-initial_cogs = []
-
-# Get list of cogs from /cogs directory and add them to cogs
-for cog in glob.glob("cogs/**/*.py", recursive=True):
-    cog = os.path.normpath(cog).split(os.sep)
-
-    # Remove .py from filename
-    if cog[-1].endswith(".py"):
-        cog[-1] = cog[-1][:-3]
-
-    initial_cogs.append(".".join(cog))
-
-
-initial_cogs += config.cogs
-
-# Cogs to exclude
-for cog in ["cogs.dev.template"] + config.excluded_cogs:
-    initial_cogs.remove(cog)
-
 activity = discord.Activity(type=discord.ActivityType.listening, name="commands!")
 
 intents = discord.Intents.default()
@@ -54,9 +34,32 @@ async def on_ready():
     log.info(f"[bold bright_magenta]:: Bot started!", extra={"markup": True})
 
 
+def run():
+    bot.run(config.token)
+
+
 def main():
     # Load cogs
     errors = []
+
+    # Get cogs
+    initial_cogs = []
+
+    # Get list of cogs from /cogs directory and add them to cogs
+    for cog in glob.glob("cogs/**/*.py", recursive=True):
+        cog = os.path.normpath(cog).split(os.sep)
+
+        # Remove .py from filename
+        if cog[-1].endswith(".py"):
+            cog[-1] = cog[-1][:-3]
+
+        initial_cogs.append(".".join(cog))
+
+    initial_cogs += config.cogs
+
+    # Cogs to exclude
+    for cog in ["cogs.dev.template"] + config.excluded_cogs:
+        initial_cogs.remove(cog)
 
     for extension in initial_cogs:
         log.info(f"[bright_magenta]:: Loading {extension}", extra={"markup": True})
@@ -75,7 +78,7 @@ def main():
             extra={"markup": True},
         )
 
-    bot.run(config.token)
+    run()
 
 
 if __name__ == "__main__":

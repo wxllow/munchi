@@ -1,6 +1,7 @@
 """For interacting with the Discord API"""
 
 import logging
+from urllib.parse import quote
 
 import aiohttp
 import hikari
@@ -24,7 +25,16 @@ async def get_guild(guild: int) -> dict:
             headers=headers,
         ) as resp:
             resp.raise_for_status()
-            return await resp.json()
+            data = await resp.json()
+
+        async with await session.get(
+            f"https://discord.com/api/v10/guilds/{guild}/channels",
+            headers=headers,
+        ) as resp:
+            resp.raise_for_status()
+            data["channels"] = await resp.json()
+
+        return data
 
 
 async def get_user_guild(guild_id, token) -> dict:
@@ -100,3 +110,18 @@ async def get_user_guild_and_db(guild_id, token):
         server = await db["server"].find_one(query)
 
     return guild, server, query
+
+
+async def process_reaction_message(message):
+    channel_id = message["channel"]
+    message_id = message["message"]
+    reactions = message["roles"]
+
+    for reaction in reactions.keys():
+        headers = {"Authorization": f"Bot {config.token}"}
+
+        async with aiohttp.ClientSession() as session:
+            await session.put(
+                f"https://discord.com/api/v10/channels/{channel_id}/messages/{message_id}/reactions/{quote(reaction)}/@me",
+                headers=headers,
+            )

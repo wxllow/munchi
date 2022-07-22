@@ -85,6 +85,7 @@ async def me_guild(request, guild_id, token):
             "goodbye_embed": server.get("goodbye_embed", {}),
             "reaction_roles_message": [
                 {
+                    "channel": doc.get("channel"),
                     "message": doc["message"],
                     "guild": doc["guild"],
                     "type": doc.get("type", "normal"),
@@ -105,6 +106,7 @@ async def me_guild(request, guild_id, token):
 async def add_message(request, guild_id, token):
     try:
         message_id = int(request.json["message"])
+        channel_id = int(request.json["channel"])
         roles = {k: [int(x) for x in v] for k, v in request.json["roles"].items()}
         type_ = request.json.get("type", "normal")
     except KeyError as e:
@@ -114,7 +116,7 @@ async def add_message(request, guild_id, token):
 
     await get_user_guild_and_db(guild_id, token)
 
-    msg_q = {"guild": guild_id, "message": message_id}
+    msg_q = {"guild": guild_id, "message": message_id, "channel": channel_id}
     message = await db["reaction_roles_message"].find_one(msg_q)
 
     if not message:
@@ -138,6 +140,10 @@ async def add_message(request, guild_id, token):
                 "type": type_ or message.get("type", "normal"),
             }
         },
+    )
+
+    request.app.add_task(
+        process_reaction_message(await db["reaction_roles_message"].find_one(msg_q))
     )
 
     return json({})

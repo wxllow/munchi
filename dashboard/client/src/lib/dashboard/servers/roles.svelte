@@ -12,9 +12,15 @@
 
     // Elements
     let addModalForm: HTMLFormElement;
+    let addModalChannelElem: HTMLSelectElement;
     let addModalMessageElem: HTMLInputElement;
     let addModalTypeElem: HTMLSelectElement;
     let addModalEmojiRoleElems: HTMLDivElement;
+
+    // Refetch Server
+    const reloadServer = async () => {
+        window.location.reload();
+    };
 
     // Validate a field
     const validateField = async (i: any): Promise<boolean> => {
@@ -53,11 +59,19 @@
     const editMessage = async (msg: {
         message: string;
         type: string;
+        channel?: string;
         roles: {
             [key: string]: string[];
         };
     }) => {
-        await toggleAddModal(null);
+        await toggleAddModal();
+
+        if (msg.channel)
+            (
+                addModalChannelElem.querySelector(
+                    `option[id='${msg.channel}']`
+                ) as HTMLOptionElement
+            ).selected = true;
 
         addModalMessageElem.value = msg.message;
         (
@@ -98,6 +112,7 @@
     const submitAddModal = async (e?: Event) => {
         let message = addModalMessageElem.value;
         let type = addModalTypeElem.selectedOptions[0].id;
+        let channel = addModalChannelElem.selectedOptions[0].id;
 
         const reactionEmojis = Array.from(
             addModalEmojiRoleElems.querySelectorAll("#emoji")
@@ -131,15 +146,13 @@
                     "?token=" + localStorage.getItem("token")
                 ),
                 {
+                    channel,
                     message,
                     type,
                     roles: reactions,
                 }
             )
-            .then(() => {
-                // Reload to reflect changes
-                window.location.reload();
-            })
+            .then(reloadServer)
             .catch((err) => {
                 console.error(err);
                 alert(
@@ -151,13 +164,15 @@
     const deleteMessage = async (e: Event) => {
         let message = (e.target as HTMLButtonElement).id;
 
-        await axios.delete(
-            urlJoin(
-                getConfig().backend_uri,
-                `/guilds/${$page.params.slug}/remove_reaction_message/${message}`,
-                "?token=" + localStorage.getItem("token")
+        await axios
+            .delete(
+                urlJoin(
+                    getConfig().backend_uri,
+                    `/guilds/${$page.params.slug}/remove_reaction_message/${message}`,
+                    "?token=" + localStorage.getItem("token")
+                )
             )
-        );
+            .then(reloadServer);
     };
 </script>
 
@@ -169,6 +184,7 @@
             class="text-xs  uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
         >
             <tr>
+                <th scope="col" class="py-3 px-6"> Channel </th>
                 <th scope="col" class="py-3 px-6"> Message ID </th>
                 <th scope="col" class="py-3 px-6"> Type </th>
                 <th scope="col" class="py-3 px-6"> Roles </th>
@@ -181,6 +197,13 @@
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     id={message.message}
                 >
+                    <td class="py-4 px-6">
+                        #{message.channel
+                            ? server.channels.find(
+                                  (x) => x.id == message.channel && x.type == 0
+                              ).name
+                            : "Unknown"}
+                    </td>
                     <td class="py-4 px-6"> {message.message} </td>
                     <td class="py-4 px-6">
                         {message.type.charAt(0).toUpperCase() +
@@ -256,6 +279,17 @@
     >
         <h1 class="my-0 px-0 text-3xl font-semibold">Add Message/Reaction</h1>
         <form bind:this={addModalForm}>
+            <Dropdown
+                bind:to={addModalChannelElem}
+                title="Channel"
+                id="channel"
+                options={server.channels
+                    .filter((x) => x.type == 0)
+                    .map((x) => ({
+                        id: x.id,
+                        name: `#${x.name}`,
+                    }))}
+            />
             <Input
                 bind:to={addModalMessageElem}
                 title="Message ID"
@@ -291,7 +325,7 @@
                 </div>
                 <button
                     class="rounded-lg bg-green-400 px-5 py-2.5 mr-2 mb-2 hover:brightness-90"
-                    on:click={(e) => clone(e)}
+                    on:click={clone}
                 >
                     Add Another Reaction
                 </button>
