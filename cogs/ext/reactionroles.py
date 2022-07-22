@@ -28,7 +28,7 @@ class ReactionRoles(commands.Cog):
             return member, None, None
 
         roles = message.get("roles", {}).get(
-            reaction.emoji if type(reaction.emoji) is str else reaction.emoji.name
+            reaction.emoji if type(reaction.emoji) is str else str(reaction.emoji.id)
         )
 
         if not roles:
@@ -40,6 +40,9 @@ class ReactionRoles(commands.Cog):
     async def on_raw_reaction_add(self, reaction):
         """When someone adds a reaction to a message"""
         member, roles, message = await self.get_mrm(reaction)
+
+        if member.bot:
+            return
 
         if not (roles or message):
             return
@@ -63,6 +66,9 @@ class ReactionRoles(commands.Cog):
     async def on_raw_reaction_remove(self, reaction):
         """When someone removes a reaction from a message"""
         member, roles, message = await self.get_mrm(reaction)
+
+        if member.bot:
+            return
 
         if not (roles or message):
             return
