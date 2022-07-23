@@ -1,5 +1,3 @@
-import os
-import platform
 from datetime import datetime
 from importlib.metadata import version
 
@@ -33,15 +31,15 @@ class InfoCog(commands.Cog):
         )
 
         embed.description = f"""
-A simple, configurable, open-source, multi-functional Discord bot written in Python with slash commands!
+Free, fast, powerful, and open-source replacement for all your Discord server's needs.
+
+***Note: Munchi is still early in development :)***
 
 **Servers:** {len(self.bot.guilds):,}
 **Users:** {len(self.bot.users):,}
 
+**Ping:** {round(self.bot.latency * 1000):,}ms 🏓
 **Uptime:** {format_timespan(datetime.now() - self.uptime)}
-**Python:** {platform.python_version()}
-**Platform:** {platform.system().replace('Darwin', 'macOS')}
-**RAM Usage:** {bytes2human(psutil.Process(os.getpid()).memory_info().rss)}
         """.strip()
 
         await ctx.respond(embed=embed)
